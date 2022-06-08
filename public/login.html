@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <title>Login</title>
+	<!--<link rel="stylesheet" href="/public/style.css"> -->
+  <head>
+	  <h1>Login</h1>
+  </head>
+  <body >
+	<form action="/postlogin" method="post" class="center">
+  	<br>
+  	<label>Username: </label><input type="text" name="username" placeholder="Username" required><br><br>
+  	<br>
+  	<label>Password: </label><input type="password" name="password" placeholder="Password" required><br><br>
+  	<input type="submit" value="login">
+	  <br><br>
+	  <a href="./register">New to Scrub? Register</a>
+	</form>
+  </body>
+ <style>
+	 form {
+  text-align: center;
+  border-radius: 10in;
+  }
+  body{
+	background-color: bisque;
+  }
+  h1 {
+  text-align: center;
+  }
+  </style>
+</html>
