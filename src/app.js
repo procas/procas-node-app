@@ -8,6 +8,7 @@ const sleep = require('system-sleep')
 const request = require('request')
 const port = process.env.PORT || 3000
 
+app.set('view engine', 'hbs')
 app.use(bodyParser.urlencoded({ extended: false }));
 const publicDirPath = path.join(__dirname, '../public')
 
@@ -20,6 +21,12 @@ app.get('/', (req, res) => {
   res.sendFile(publicDirPath+'/login.html');
 });
 
+app.get('/loggedin', (req, res) => {
+  res.render('loggedin', {
+    'username':'mailtoproma@gmail.com'
+  })
+})
+
 app.post('/postlogin', async function(req, res) {
   // Insert Login Code Here
   let username = req.body.username;
@@ -31,7 +38,14 @@ app.post('/postlogin', async function(req, res) {
     //sleep(2000);
     resp = response.body.message
     console.log(resp)
-    res.send(resp)
+    if(resp === "Logged in")
+    {
+      res.render('loggedin.hbs', {
+        'username': username
+      })
+    }
+    else
+      res.send(resp)
 })
 
 });
@@ -44,7 +58,12 @@ app.post('/postregister', async function (req, res) {
   let resp = await request({url:url+endpt, json:true}, (error, response) => {
     resp = response.body.message
     console.log(resp)
-    res.send(resp)
+    if(resp === "Success")
+      res.render('registered.hbs', {
+        'username': username
+      })
+    else
+      res.send(resp)
 })
  // res.send(username+" "+password)
 })
