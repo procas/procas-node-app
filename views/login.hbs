@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html>
+    <title>Login</title>
+	<!--<link rel="stylesheet" href="/public/style.css"> -->
   <head>
-	  <h1>Join Us!</h1>
+	  <h1>Login</h1>
   </head>
   <body >
-	<form action="/postregister" method="post" class="center">
+	<form action="/postlogin" method="post" class="center">
   	<br>
+    <p style="color:red">{{incorrect}}</p>
+    <br><br>
   	<label>Username: </label><input type="text" name="username" placeholder="Username" required><br><br>
   	<br>
   	<label>Password: </label><input type="password" name="password" placeholder="Password" required><br><br>
-    <label>Confirm password: </label><input type="password" name="conf_password" placeholder="Password" required><br><br>
-  	<input type="submit" value="register">
-      <br>
-      <a href="/">Already a member? Sign in!</a>
+  	<input type="submit" value="login">
+	  <br><br>
+	  <a href="/register">New to User App? Register</a>
 	</form>
   </body>
  <style>
@@ -26,5 +29,6 @@
   h1 {
   text-align: center;
   }
+
   </style>
 </html>

@@ -8,17 +8,24 @@ const sleep = require('system-sleep')
 const request = require('request')
 const port = process.env.PORT || 3000
 
+// Deploy: git push heroku main
+
 app.set('view engine', 'hbs')
 app.use(bodyParser.urlencoded({ extended: false }));
 const publicDirPath = path.join(__dirname, '../public')
 
 app.get('/register', (req, res) => {
-  res.sendFile(publicDirPath+'/register.html');
+  res.render('register');
+});
+
+app.get('/login', (req, res) => {
+  //res.sendFile(publicDirPath+'/login.html');
+  res.render('login.hbs')
 });
 
 // Route to Login Page
 app.get('/', (req, res) => {
-  res.sendFile(publicDirPath+'/login.html');
+  res.sendFile(publicDirPath+'/home.html');
 });
 
 app.get('/loggedin', (req, res) => {
@@ -45,26 +52,42 @@ app.post('/postlogin', async function(req, res) {
       })
     }
     else
-      res.send(resp)
+      res.render('login', {
+        incorrect:'Incorrect Password or Username'
+      })
 })
 
 });
 
 app.post('/postregister', async function (req, res) {
   let username = req.body.username
+  let pwd = req.body.password
   let password = req.body.conf_password
   url = config.register_url.toString()
-  const endpt = "?email="+username+"&pass="+password
-  let resp = await request({url:url+endpt, json:true}, (error, response) => {
-    resp = response.body.message
-    console.log(resp)
-    if(resp === "Success")
-      res.render('registered.hbs', {
-        'username': username
-      })
-    else
-      res.send(resp)
-})
+  console.log("Password: "+pwd)
+  console.log("Confirm password: "+password)
+  if(pwd !== password)
+  {
+    res.render('register', {
+      passnotmatch: 'Passwords are not matching'
+    })
+  }
+  else
+  {
+      const endpt = "?email="+username+"&pass="+password
+      let resp = await request({url:url+endpt, json:true}, (error, response) => {
+        resp = response.body.message
+        console.log(resp)
+        if(resp === "Success")
+          res.render('registered.hbs', {
+            'username': username
+          })
+        else
+          res.render('register', {
+            existinguser: 'It seems like you have already registered!'
+          })
+    })
+  }
  // res.send(username+" "+password)
 })
 

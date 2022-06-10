@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-    <title>Login</title>
-	<!--<link rel="stylesheet" href="/public/style.css"> -->
   <head>
-	  <h1>Login</h1>
+	  <h1>Join Us!</h1>
   </head>
   <body >
-	<form action="/postlogin" method="post" class="center">
+	<form action="/postregister" method="post" class="center">
   	<br>
+    <p style="color:red">{{existinguser}}</p>
+    <p style="color:red">{{passnotmatch}}</p>
+    <br><br>
   	<label>Username: </label><input type="text" name="username" placeholder="Username" required><br><br>
   	<br>
   	<label>Password: </label><input type="password" name="password" placeholder="Password" required><br><br>
-  	<input type="submit" value="login">
-	  <br><br>
-	  <a href="./register">New to User App? Register</a>
+    <label>Confirm password: </label><input type="password" name="conf_password" placeholder="Password" required><br><br>
+  	<input type="submit" value="register">
+      <br>
+      <a href="login.hbs">Already a member? Sign in!</a>
 	</form>
   </body>
  <style>
