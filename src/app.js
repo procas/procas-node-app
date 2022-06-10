@@ -6,12 +6,16 @@ const config = require('./config.js')
 const helper = require('./helper.js')
 const sleep = require('system-sleep')
 const request = require('request')
+const cookieParser = require('cookie-parser');
+const { save_note } = require('./config.js');
+const { title } = require('process');
 const port = process.env.PORT || 3000
 
 // Deploy: git push heroku main
 
 app.set('view engine', 'hbs')
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser())
 const publicDirPath = path.join(__dirname, '../public')
 
 app.get('/register', (req, res) => {
@@ -44,9 +48,13 @@ app.post('/postlogin', async function(req, res) {
   let resp = await request({url:url+endpt, json:true}, (error, response) => {
     //sleep(2000);
     resp = response.body.message
+    token = response.body.token
     console.log(resp)
     if(resp === "Logged in")
     {
+      //save token in session
+      res.cookie('jwt', token)
+      console.log(token)
       res.render('loggedin.hbs', {
         'username': username
       })
@@ -58,6 +66,51 @@ app.post('/postlogin', async function(req, res) {
 })
 
 });
+
+
+app.post('/savenote', async function(req, res){
+    if(req.cookies.jwt !== '')
+    {
+      const url = save_note
+      const title = req.body.title
+      const detail= req.body.details
+      token = req.cookies.jwt
+      let resp = await request.post({
+        url: save_note,
+        body: {'title':title, 'detail':detail, 'token':token},
+        json:true,
+      }, function(error, response, body) {
+          console.log(body)
+          res.send({body})
+      })
+    }
+    else
+    {
+      res.send('No cookies set. Please log in again')
+    }
+})
+
+app.get('/getnotes', (req, res) => 
+{
+const notes = [
+  { 
+    title: 'Title-1',
+    detail: 'Content for Title-1'
+  },
+  { 
+    title: 'Title-1',
+    detail: 'Content for Title-1'
+  },
+  { 
+    title: 'Title-1',
+    detail: 'Content for Title-1' 
+  }
+]
+res.render('viewnotes', {
+  notes: notes
+});
+})
+
 
 app.post('/postregister', async function (req, res) {
   let username = req.body.username

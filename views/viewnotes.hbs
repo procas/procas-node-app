@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<head>
+    
+</head>
+<body>
+ <!-- <ul id="target"></ul> -->
+ <ul>
+  {{#each notes as |note|}}
+    <li>
+        <strong>{{note.title}}</strong>
+        <br>
+        <p>{{note.detail}}</p>
+    </li>
+  {{/each}}
+</ul>
+</body>
+<style>
+    ul li {
+  background: #cce5ff;
+  color: darkblue;
+  margin: 5px;
+  align-items: center;
+}
+</style>
+<script type="text/javascript">
+  var array = ["S1", "S2"];
+  target.innerHTML = '<li>' + array.join('</li><li>') + '</li>';
+</script>
+</html>
