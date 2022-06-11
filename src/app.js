@@ -7,7 +7,7 @@ const helper = require('./helper.js')
 const sleep = require('system-sleep')
 const request = require('request')
 const cookieParser = require('cookie-parser');
-const { save_note } = require('./config.js');
+const { save_note, get_notes } = require('./config.js');
 const { title } = require('process');
 const port = process.env.PORT || 3000
 
@@ -54,7 +54,7 @@ app.post('/postlogin', async function(req, res) {
     {
       //save token in session
       res.cookie('jwt', token)
-      console.log(token)
+      //console.log(token)
       res.render('loggedin.hbs', {
         'username': username
       })
@@ -80,7 +80,7 @@ app.post('/savenote', async function(req, res){
         body: {'title':title, 'detail':detail, 'token':token},
         json:true,
       }, function(error, response, body) {
-          console.log(body)
+          //console.log(body)
           res.send({body})
       })
     }
@@ -90,25 +90,22 @@ app.post('/savenote', async function(req, res){
     }
 })
 
-app.get('/getnotes', (req, res) => 
+app.get('/getnotes', async function(req, res) 
 {
-const notes = [
-  { 
-    title: 'Title-1',
-    detail: 'Content for Title-1'
-  },
-  { 
-    title: 'Title-1',
-    detail: 'Content for Title-1'
-  },
-  { 
-    title: 'Title-1',
-    detail: 'Content for Title-1' 
-  }
-]
-res.render('viewnotes', {
-  notes: notes
-});
+if(req.cookies.jwt !== '')
+{
+  token = req.cookies.jwt
+  const url = get_notes+"?token="+token
+  let resp = await request.get({url: url, json: true}, (error, response) => {
+    notes = response.body
+    //console.log(notes)
+    res.render('viewnotes', {
+      notes: notes
+    });
+  })
+  
+}
+
 })
 
 
