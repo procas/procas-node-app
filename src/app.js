@@ -112,12 +112,12 @@ if(req.cookies.jwt !== '')
 app.get('/deletenote', async function(req, res){
   id = req.query.id
   token = req.cookies.jwt
-  console.log(token)
+  //console.log(token)
   if(token !== '')
   {
     const url = delete_note+"?token="+token+"&id="+id
     let resp = await request.get({url:url, json:true}, (error, response) => {
-      console.log(url)
+      //console.log(url)
       resp = response.body.message
       if(resp === "Note Deleted")
         res.send("Deleted note# "+id)
