@@ -7,8 +7,9 @@ const helper = require('./helper.js')
 const sleep = require('system-sleep')
 const request = require('request')
 const cookieParser = require('cookie-parser');
-const { save_note, get_notes } = require('./config.js');
+const { save_note, get_notes, delete_note } = require('./config.js');
 const { title } = require('process');
+const { url } = require('inspector');
 const port = process.env.PORT || 3000
 
 // Deploy: git push heroku main
@@ -106,6 +107,26 @@ if(req.cookies.jwt !== '')
   
 }
 
+})
+
+app.get('/deletenote', async function(req, res){
+  id = req.query.id
+  token = req.cookies.jwt
+  console.log(token)
+  if(token !== '')
+  {
+    const url = delete_note+"?token="+token+"&id="+id
+    let resp = await request.get({url:url, json:true}, (error, response) => {
+      console.log(url)
+      resp = response.body.message
+      if(resp === "Note Deleted")
+        res.send("Deleted note# "+id)
+      else
+        res.send("Error while deleting")
+    })
+  }
+  else
+  res.send("Unauthorized, please log in again")
 })
 
 

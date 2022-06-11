@@ -1,17 +1,38 @@
 <!DOCTYPE html>
 <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type = "text/javascript">
     
+      $("button").click(function(e) {
+        const id = document.getElementById("id").innerHTML
+        console.log(id)
+        $.ajax({
+      url: 'deletenote',
+      data: {'id': id},
+      type: "GET",
+      success: function(data){
+            alert("deleted")
+      },
+      error: function(passParams){
+           alert("error")
+      }
+});
+  });
+    
+</script>
 </head>
 <body>
+  
  <!-- <ul id="target"></ul> -->
  <ul>
   {{#each notes as |note|}}
     <li>
-        <strong>{{note.title}}</strong>
+        <h20 id="id">{{note.id}}</h20><a>. </a><strong id="title">{{note.title}}</strong>
         <br>
         <small>{{note.date}}</small>
         <br>
         <p>{{note.detail}}</p>
+        <button>Delete Note</button>
     </li>
   {{/each}}
 </ul>
@@ -28,4 +49,5 @@
   var array = ["S1", "S2"];
   target.innerHTML = '<li>' + array.join('</li><li>') + '</li>';
 </script> -->
+
 </html>
