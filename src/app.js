@@ -7,7 +7,7 @@ const helper = require('./helper.js')
 const sleep = require('system-sleep')
 const request = require('request')
 const cookieParser = require('cookie-parser');
-const { save_note, get_notes, delete_note } = require('./config.js');
+const { save_note, get_notes, delete_note, modify_notes } = require('./config.js');
 const { title } = require('process');
 const { url } = require('inspector');
 //const popup = require('node-popup')
@@ -101,6 +101,52 @@ app.get('/savenote', async function(req, res){
     {
       res.send('No cookies set. Please log in again')
     }
+})
+
+
+app.get('/editnote', async function(req, res)
+{
+  const id = req.query.id
+  const title = req.query.title
+  const detail = req.query.detail
+  res.render('editnote', {
+   // 'username': username,
+    'note_id': id,
+    'edited_title': title,
+    'edited_content': detail
+  })
+})
+
+app.get('/postedit', async function(req, res)
+{
+  const id = req.query.note_id
+  const edited_title = req.query.title
+  const edited_body = req.query.content
+  const token = req.cookies.jwt
+  if(token !== '')
+  {
+    let resp = await request.post({
+      url: modify_notes,
+      body: {'id': id, 'title':edited_title, 'detail':edited_body, 'token':token},
+      json:true,
+    }, function(error, response, body) {
+        //console.log(req.query.title+": "+req.query.details)
+        if(response.body.message === "Note Updated")
+        {
+         // console.log("Note saved")
+          res.send("SAVED")
+        }
+        else
+        {
+          console.log(response.body)
+          console.log("Error while saving")
+        }
+    })
+  }
+  else
+  res.send("Token is expired, please login again")
+  // console.log(req.query)
+  // res.send("UPDATED NOTE "+id+": "+edited_title+": "+edited_body)
 })
 
 app.get('/getnotes', async function(req, res) 

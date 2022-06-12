@@ -3,11 +3,13 @@ const register_url = "https://learngram-register.herokuapp.com/register"
 const save_note = "https://learngram-register.herokuapp.com/uploadnote"
 const get_notes = "https://learngram-register.herokuapp.com/getnotes"
 const delete_note = "https://learngram-register.herokuapp.com/deletenote"
+const modify_note = "https://learngram-register.herokuapp.com/modifynote"
 
 module.exports = {
     login_url: url,
     register_url: register_url,
     save_note: save_note,
     get_notes: get_notes,
-    delete_note: delete_note
+    delete_note: delete_note,
+    modify_notes: modify_note
 }

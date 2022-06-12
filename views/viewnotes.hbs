@@ -3,7 +3,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type = "text/javascript">
     $(document).ready(function (){
-      $("button").click(function(e) {
+      $("button#delete").click(function(e) {
         const id = this.dataset.key
         console.log(id)
         $.ajax({
@@ -18,11 +18,31 @@
       }
 });
   });
+  $("button#edit").click(function(e) {
+        const id = this.dataset.id
+        const detail = this.dataset.detail
+        const title = this.dataset.title
+        console.log(id)
+        $.ajax({
+      url: 'editnote',
+      data: {'id': id, 'title': title, 'detail': detail},
+      type: "GET",
+      success: function(data){
+            console.log(data)
+            jQuery("#change").html(data)
+      },
+      error: function(passParams){
+           //alert("error")
+      }
+})
+  });
+
+ 
     });
     
 </script>
 </head>
-<body>
+<body id="change">
   
  <!-- <ul id="target"></ul> -->
  <ul>
@@ -33,10 +53,11 @@
         <small>{{note.date}}</small>
         <br>
         <p>{{note.detail}}</p>
-        <button data-key={{note.id}}>Delete Note</button>
+        <button id="delete" data-key={{note.id}}>Delete Note</button><button id="edit" data-id="{{note.id}}" data-detail="{{note.detail}}" data-title="{{note.title}}">Edit Note</button>
     </li>
   {{/each}}
 </ul>
+
 </body>
 <style>
     ul li {
@@ -44,6 +65,9 @@
   color: darkblue;
   margin: 5px;
   align-items: center;
+}
+form{
+  text-align: center;
 }
 </style>
 <!-- <script type="text/javascript">
