@@ -134,9 +134,7 @@ app.post('/postregister', async function (req, res) {
   let username = req.body.username
   let pwd = req.body.password
   let password = req.body.conf_password
-  url = config.register_url.toString()
-  console.log("Password: "+pwd)
-  console.log("Confirm password: "+password)
+  const url = config.register_url.toString()
   if(pwd !== password)
   {
     res.render('register', {
