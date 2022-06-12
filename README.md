@@ -10,7 +10,7 @@ Techstacks and frameworks that were employed to bring User App to your service:
 <ul>
   <li>NodeJS</li>
   <li>HTML/CSS/JS</li>
-  <li>Flask (Python) -> <a href="https://github.com/procas/register_formatted">Git Repo</a></li>
+  <li>Flask (Python) -> <a href="https://github.com/procas/procas-node-app-backend">Git Repo</a></li>
   <li>MySQL Workbench</li>
   <li>Heroku</li>
   <li>Git CI/CD</li>
