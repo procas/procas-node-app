@@ -65,7 +65,7 @@ app.post('/postlogin', async function(req, res) {
     }
     else
       res.render('login', {
-        incorrect:'Incorrect Password or Username'
+        incorrect:'Wrong credentials OR invalid email id'
       })
 })
 
@@ -211,7 +211,7 @@ app.post('/postregister', async function (req, res) {
           })
         else
           res.render('register', {
-            existinguser: 'It seems like you have already registered!'
+            existinguser: 'You are already a member OR your email is not valid, please re-check!'
           })
     })
   }
