@@ -10,6 +10,8 @@ const cookieParser = require('cookie-parser');
 const { save_note, get_notes, delete_note } = require('./config.js');
 const { title } = require('process');
 const { url } = require('inspector');
+//const popup = require('popups')
+let alert = require('alert')
 const port = process.env.PORT || 3000
 
 // Deploy: git push heroku main
@@ -81,8 +83,11 @@ app.post('/savenote', async function(req, res){
         body: {'title':title, 'detail':detail, 'token':token},
         json:true,
       }, function(error, response, body) {
-          //console.log(body)
-          res.send({body})
+          console.log(response.body)
+          if(response.body.message === "Saved")
+            alert("Note saved")
+          else
+            alert("Error while saving")
       })
     }
     else
