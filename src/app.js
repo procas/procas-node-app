@@ -10,8 +10,9 @@ const cookieParser = require('cookie-parser');
 const { save_note, get_notes, delete_note } = require('./config.js');
 const { title } = require('process');
 const { url } = require('inspector');
-//const popup = require('popups')
-let alert = require('alert')
+//const popup = require('node-popup')
+//const alert = require('alert-node')
+//let alert = require('alert')
 const port = process.env.PORT || 3000
 
 // Deploy: git push heroku main
@@ -71,23 +72,29 @@ app.post('/postlogin', async function(req, res) {
 });
 
 
-app.post('/savenote', async function(req, res){
+app.get('/savenote', async function(req, res){
     if(req.cookies.jwt !== '')
     {
       const url = save_note
-      const title = req.body.title
-      const detail= req.body.details
+      const title = req.query.title
+      const detail= req.query.details
       token = req.cookies.jwt
       let resp = await request.post({
         url: save_note,
         body: {'title':title, 'detail':detail, 'token':token},
         json:true,
       }, function(error, response, body) {
-          console.log(response.body)
+          //console.log(req.query.title+": "+req.query.details)
           if(response.body.message === "Saved")
-            alert("Note saved")
+          {
+            console.log("Note saved")
+            res.send("SAVED")
+          }
           else
-            alert("Error while saving")
+          {
+            console.log(response.body)
+            console.log("Error while saving")
+          }
       })
     }
     else

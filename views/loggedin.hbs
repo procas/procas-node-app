@@ -1,5 +1,27 @@
 <!DOCTYPE html>
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type = "text/javascript">
+    $(document).ready(function (){
+      $("button").click(function(e) {
+        const title = $('textarea[name=title]').val()
+        const details = $('textarea[name=content]').val()
+        //console.log(id)
+        $.ajax({
+      url: 'savenote',
+      data: {'title': title, 'details': details},
+      type: "GET",
+      success: function(data){
+            alert("Note saved")
+      },
+      error: function(passParams){
+           alert("Errow while saving")
+      }
+});
+  });
+    });
+    
+    </script>
 </head>
 <body>
     <h1>
@@ -9,18 +31,23 @@
     <input type="submit" value="My Notes">
     </form>
     <br><br><br><br><br><br><br><br>
-    <form action="/savenote" method="post">
-        <label>Title:</label><input type="text" id="title" name="title" placeholder="Sample title" required="true">
+    <div>
+        <label>Title:</label><textarea id="title" name="title"  placeholder="Sample title" required="true"></textarea>
         <br>
-        <label>Content:</label><input type="text" id="content"  name="details" placeholder="Lorem ipsum dolor" required="true">
+        <label>Content:</label><textarea id="content" name="content" placeholder="Lorem ipsum dolor" required="true"></textarea>
         <br><br>
-        <input type="submit" value="Add Note">
-    </form>
+        <button type="submit">Add Note</button>
+    </div>
 </body>
 <style>
         form {
     text-align: center;
     border-radius: 10in;
+    }
+    div
+    {
+        text-align: center;
+        border-radius: 10in;
     }
     body{
         background-color: lightgrey;
