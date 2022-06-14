@@ -3,7 +3,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type = "text/javascript">
     $(document).ready(function (){
-      $("button").click(function(e) {
+      $("button#add").click(function(e) {
         const title = $('textarea[name=title]').val()
         const details = $('textarea[name=content]').val()
         //console.log(id)
@@ -36,8 +36,12 @@
         <br>
         <label>Content:</label><textarea id="content" name="content" placeholder="Lorem ipsum dolor" required="true">{{edited_content}}</textarea>
         <br><br>
-        <button type="submit">Add Note</button>
+        <button type="submit" id="add">Add Note</button>
     </div>
+    <br><br><br>
+    <form action="logout", method="get">
+        <button type="submit" value="Logout" style="color:brown">Logout</button>
+    </form>
 </body>
 <style>
         form {

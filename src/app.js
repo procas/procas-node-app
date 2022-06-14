@@ -53,7 +53,7 @@ app.post('/postlogin', async function(req, res) {
     //sleep(2000);
     resp = response.body.message
     token = response.body.token
-    console.log(resp)
+    //console.log(resp)
     if(resp === "Logged in")
     {
       //save token in session
@@ -87,7 +87,7 @@ app.get('/savenote', async function(req, res){
           //console.log(req.query.title+": "+req.query.details)
           if(response.body.message === "Saved")
           {
-            console.log("Note saved")
+            //console.log("Note saved")
             res.send("SAVED")
           }
           else
@@ -99,7 +99,7 @@ app.get('/savenote', async function(req, res){
     }
     else
     {
-      res.send('No cookies set. Please log in again')
+      res.send('Session explired, please log in again')
     }
 })
 
@@ -151,9 +151,26 @@ app.get('/postedit', async function(req, res)
 
 app.get('/getnotes', async function(req, res) 
 {
-if(req.cookies.jwt !== '')
-{
-  token = req.cookies.jwt
+  if(req.cookies == '') res.render('login', {
+    incorrect:'Session expired, please log in again'
+  })
+  else
+  {
+    token = ""
+    try
+    {
+      token = req.cookies.jwt
+      if(token == '')
+      res.render('login', {
+        incorrect:'Session expired, please log in again'
+      })
+    }
+    catch
+    { 
+      res.render('login', {
+        incorrect:'Session expired, please log in again'
+      })
+    }
   const url = get_notes+"?token="+token
   let resp = await request.get({url: url, json: true}, (error, response) => {
     notes = response.body
@@ -162,7 +179,6 @@ if(req.cookies.jwt !== '')
       notes: notes
     });
   })
-  
 }
 
 })
@@ -216,6 +232,18 @@ app.post('/postregister', async function (req, res) {
     })
   }
  // res.send(username+" "+password)
+})
+
+app.get('/logout', (req, res) => {
+  try
+  {
+    res.cookie('jwt', '')
+    res.render('login')
+  }
+  catch
+  {
+    //pass
+  }
 })
 
 
